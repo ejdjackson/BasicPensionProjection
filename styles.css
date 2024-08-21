@@ -35,12 +35,15 @@ input {
     justify-content: center; /* Center elements horizontally */
     align-items: center;
     margin-bottom: 15px;
+    justify-content: flex-start;
 }
 
 .form-group label {
     margin-right: 10px;
     font-size: 1.1em;
     color: #ffffff;
+    flex: 0 0 50%; /* Labels take up 50% of the space */
+    text-align: right;
 }
 
 .form-group input {
@@ -52,6 +55,10 @@ input {
     max-width: 150px;
 }
 
+.form-group .form-control {
+    flex: 0 0 50%; /* Inputs take up 50% of the space */
+    max-width: 100px; /* Set a fixed width for the input boxes */
+}
 
 .form-group button {
     margin-top: 10px;
@@ -90,6 +97,11 @@ input {
     max-width: 300px; /* Control the button's width */
     font-size: 1.4em; /* Make the text size larger */
     
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
 }
 
 
