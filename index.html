@@ -1,81 +1,113 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pension Projection Calculator</title>
+    <title>Bootstrap Grid with Dynamic Chart Example</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+    <!-- Custom Styles -->
+    <style>
+        /* Set a fixed height for both the input form and graph container */
+        .fixed-height {
+            height: 800px; 
+            
+        }
+        #Graph {
+            width: 100% !important; /* Ensure the chart uses full width of the container */
+            height: 100% !important; /* Set height to fill the container */
+        }
+        #chartContainer {
+            height: 800px;  /* Fixed height for the graph frame */
+        }
+        .income-box {
+            display: flex; /* Use Flexbox for the container */
+            justify-content: space-between; /* Evenly space the children */
+            padding: 10px 0; /* Optional padding for spacing */
+        }
+
+        .income-item {
+            flex: 1; /* Each item takes equal space */
+            text-align: center; /* Center text within each item */
+            padding: 10px; /* Optional padding inside each item */
+        }
+        
+
+    </style>
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Pension Wizard</h1>
-
-        <form id="pensionForm" onsubmit="calculateRetirementIncome(event)">
-            <div class="form-group" id="group1">
-                <label for="currentAge">Current Age:</label>
-                <input type="number" id="currentAge" class="form-control small-input" name="currentAge" required>
+        <div class="row">
+            <!-- First Column (Now Smaller) -->
+            <div class="col-md-3 fixed-height"> <!-- Set to occupy 4 out of 12 columns and fixed height -->
+                <!-- Pension Inputs in First Column -->
+                <div class="p-3 mb-3 border bg-light">
+                    <h3>Pension Inputs</h3>
+                    <form id="pensionForm">
+                        <div class="form-group">
+                            <label for="currentAge">Current Age:</label>
+                            <input type="number" id="currentAge" class="form-control" name="currentAge" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="retirementAge">Retirement Age:</label>
+                            <input type="number" id="retirementAge" class="form-control" name="retirementAge" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectionAge">Projection End Age:</label>
+                            <input type="number" id="projectionAge" class="form-control" name="projectionAge" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="currentFund">Current Fund (£):</label>
+                            <input type="number" id="currentFund" class="form-control" name="currentFund" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="annualPremium">Annual Contribution (£):</label>
+                            <input type="number" id="annualPremium" class="form-control" name="annualPremium" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="investmentReturn">Investment Return (%):</label>
+                            <input type="number" step="0.01" id="investmentReturn" class="form-control" name="investmentReturn" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inflation">Inflation (%):</label>
+                            <input type="number" step="0.01" id="inflation" class="form-control" name="inflation" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Generate Graph</button>
+                    </form>
+                </div>
             </div>
 
-            <div class="form-group hidden" id="group2">
-                <label for="retirementAge">Retirement Age:</label>
-                <input type="number" id="retirementAge" class="form-control small-input" name="retirementAge" required>
-            </div>
+            <!-- Second Column (Now Wider) -->
+            
+            <div class="col-md-9 fixed-height"> <!-- Set to occupy 8 out of 12 columns and fixed height -->
 
-            <div class="form-group hidden" id="group3">
-                <label for="projectionAge">Projection End Age:</label>
-                <input type="number" id="projectionAge" class="form-control small-input" name="projectionAge" required>
-            </div>
+                <div id="result" class="p-3 mb-3 border bg-light d-none"> 
 
-            <div class="form-group hidden" id="group4">
-                <label for="currentFund">Current Fund (£):</label>
-                <input type="number" id="currentFund" class="form-control large-input" name="currentFund" required>
-            </div>
-
-            <div class="form-group hidden" id="group5">
-                <label for="annualPremium">Annual Contribution (£):</label>
-                <input type="number" id="annualPremium" class="form-control large-input" name="annualPremium" required>
-            </div>
-
-            <div class="form-group hidden" id="group6">
-                <label for="investmentReturn">Investment Return (%):</label>
-                <input type="number" step="0.01" id="investmentReturn" class="form-control small-input" name="investmentReturn" required>
-            </div>
-
-            <div class="form-group hidden" id="group7">
-                <label for="inflation">Inflation (%):</label>
-                <input type="number" step="0.01" id="inflation" class="form-control small-input" name="inflation" required>
-            </div>
-
-            <div class="form-group hidden btn-container" id="group8">
-                <button type="submit" class="btn btn-primary">Calculate Retirement Income</button>
-            </div>
-        </form>
-
-        <div class="container hidden mt-4" id="result">
-            <h2>Result</h2>
-            <div id="resultContent"></div>
-        </div>
+                    <div class="container hidden mt-4" id="result">
+                        <h2>Result</h2>
+                        <div id="resultContent"></div>
+                    </div>
     
-        <div class="container hidden mt-4" id="projectionTable">
-            <h2>Projection Table</h2>
-            <div id="projectionTableContent"></div>
-        </div>
-        
-    </div>
+                   
+                </div>
 
-    <div id="chartContainer" class="container hidden mt-4">
-        <canvas id="projectionChart" width="1600" height="800"></canvas>
+                <!-- Second Row for the graph -->
+                <div id="chartContainer" class="p-3 mb-3 border bg-light d-none"> <!-- Initially hidden -->
+                    <h3>Future Fund Values</h3>
+                    <canvas id="Graph"></canvas> <!-- Canvas for the third graph -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Link to External JavaScript File -->
     <script src="app.js"></script>
 </body>
 </html>
