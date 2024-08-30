@@ -67,11 +67,11 @@ function generateGraph(event) {
     document.getElementById('result').classList.remove('hidden');
     document.getElementById('result').innerHTML = `
         
-        <p>With these assumptions, you could afford a pension (in today's money) of:</p>
+        <p>With these assumptions, you could afford an index-linked pension from age (${retirementAge}) (in today's money) of:</p>
         <div class="income-box">
-            <div class="income-item">Underperformance (-3%): <br>   £${Math.round(worstCaseDiscountedIncome).toLocaleString()}</div>
-            <div class="income-item">Central Scenario: <br>  £${Math.round(centralDiscountedIncome).toLocaleString()}</div>
-            <div class="income-item">Outperformance (+3%): <br>   £${Math.round(bestCaseDiscountedIncome).toLocaleString()}</div>
+            <div class="income-item">Underperformance (${100*worstCaseReturn}%) <br>   £${Math.round(worstCaseDiscountedIncome).toLocaleString()}</div>
+            <div class="income-item">Central Scenario (${100*investmentReturn}%) <br>  £${Math.round(centralDiscountedIncome).toLocaleString()}</div>
+            <div class="income-item">Outperformance (${100*bestCaseReturn}%) <br>   £${Math.round(bestCaseDiscountedIncome).toLocaleString()}</div>
         
         </div>
         
@@ -135,7 +135,7 @@ function generateGraph(event) {
             labels: labels,
             datasets: [
             {
-                label: 'Underperformance (-3%)',
+                label: 'Underperformance',
                 data: fundDataWorstCase,
                 borderColor: 'rgba(255, 99, 132, 1)',
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
@@ -151,7 +151,7 @@ function generateGraph(event) {
                 tension: 0.1
             },
             {
-                label: 'Outperformance (+3%)',
+                label: 'Outperformance',
                 data: fundDataBestCase,
                 borderColor: 'rgba(75, 192, 192, 1)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
